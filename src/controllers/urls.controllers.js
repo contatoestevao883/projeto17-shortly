@@ -36,8 +36,12 @@ export async function getUrlsById (req, res) {
 }
 
 export async function openUrls (req, res) {
-   
-    try {
+    const { shortUrl } = req.params
+    const { url } = res.locals.links
+    try { 
+        await db.query(`UPDATE urls SET "visitCount" = "visitCount" + 1 WHERE "shortUrl"=$1`, [shortUrl])
+
+        res.redirect(url)
 
     } catch (err) {
         res.status(500).send(err.message)
@@ -47,16 +51,11 @@ export async function openUrls (req, res) {
 
 export async function deleteUrls (req, res) {
    const { id } = req.params
-   const { authorization } = req.headers
-   const token = authorization?.replace("Bearer ", "")
     
     try {
-        const sessionsToken = await db.query(`SELECT * FROM sessions WHERE token=$1`, [token])
-        if (!authorization || !sessionsToken ) return res.status(401).send({ message: "Token inexistente!" })
+        await db.query(`DELETE FROM urls WHERE id=$1`, [id])
+        res.sendStatus(204)
 
-        const url = await db.query(`SELECT * FROM urls WHERE id=$1`, [id])
-        if (!url.rows[0]) return res.status(401).send("URL não pertence ao usuário!")
-        await db.query(`DELETE ONE FROM urls WHERE url=$1`, [url])
     } catch (err) {
         res.status(500).send(err.message)
     }
