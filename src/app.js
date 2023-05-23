@@ -1,10 +1,10 @@
 import express from "express"
 import cors from "cors"
-import signUpRouter from "./routes/signup.routes"
-import signInRouter from "./routes/signin.routes"
-import urlsRouter from "./routes/urls.routes"
-import usersRouter from "./routes/users.routes"
-import rankingRouter from "./routes/ranking.routes"
+import signUpRouter from "./routes/signup.routes.js"
+import signInRouter from "./routes/signin.routes.js"
+import urlsRouter from "./routes/urls.routes.js"
+import usersRouter from "./routes/users.routes.js"
+import rankingRouter from "./routes/ranking.routes.js"
 
 const app = express()
 app.use(cors())

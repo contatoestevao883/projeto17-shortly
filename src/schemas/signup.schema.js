@@ -1,11 +1,8 @@
-import BaseJoi from 'joi';
-import Extension from '@joi/date';
-const joi = BaseJoi.extend(Extension);
+import joi from "joi"
 
-
-export const customersSchema = joi.object({
-    name: joi.string().allow("").required(),
-    phone: joi.string().min(10).max(11).required(),
-    cpf: joi.number().min(11).required(),
-    birthday: joi.date().format("YYYY-MM-DD").required()
+export const signUpSchema = joi.object({
+   name: joi.string().required(),
+   email: joi.string().email().required(),
+   password: joi.string().min(8).required(),
+   confirmPassword: joi.string().valid(joi.ref('password')).required(),
 })
